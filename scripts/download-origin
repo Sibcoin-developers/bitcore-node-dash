@@ -2,23 +2,22 @@
 
 set -e
 
-root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.."
+root_dir="${HOME}/.bitcore"
 platform=`uname -a | awk '{print tolower($1)}'`
 arch=`uname -m`
-version="0.16.1"
-url="https://github.com/ivansib/sibcoin/releases/download"
-tag="v0.16.1.1"
+version="0.12.1"
+url="https://bamboo.dash.org/browse/DASHL-REL/latestSuccessful/artifact/JOB1/gitian-linux-dash-dist"
 
 if [ "${platform}" == "linux" ]; then
     if [ "${arch}" == "x86_64" ]; then
-        tarball_name="sibcoin-${version}-linux64.tar.gz"
+        tarball_name="dashcore-${version}-linux64.tar.gz"
     elif [ "${arch}" == "x86_32" ]; then
-        tarball_name="sibcoin-${version}-linux32.tar.gz"
+        tarball_name="dashcore-${version}-linux32.tar.gz"
     fi
 elif [ "${platform}" == "darwin" ]; then
-    tarball_name="sibcoin-${version}-osx64.tar.gz"
+    tarball_name="dashcore-${version}-osx64.tar.gz"
 else
-    echo "Sibcoin binary distribution not available for platform and architecture"
+    echo "Dash binary distribution not available for platform and architecture"
     exit -1
 fi
 
@@ -54,14 +53,12 @@ download_bitcoind() {
             echo "Unpacking dash distribution"
             tar -xvzf $tarball_name
             if test $? -eq 0; then
-                # sibcoin: create aliases
-                ln -sf "./sibcoin-${version}/bin/sibcoind"
-                ln -sf "./sibcoin-${version}/bin/sibcoind" "./bitcoind"
+                ln -sf "dashcore-${version}/bin/dashd"
                 return;
             fi
         fi
     fi
-    echo "Sibcoin binary distribution could not be downloaded"
+    echo "Dash binary distribution could not be downloaded"
     exit -1
 }
 
@@ -90,11 +87,11 @@ verify_download() {
 download=1
 verify=0
 
-if [ "${SKIP_SIBCOIN_DOWNLOAD}" = 1 ]; then
+if [ "${SKIP_BITCOIN_DOWNLOAD}" = 1 ]; then
     download=0;
 fi
 
-if [ "${VERIFY_SIBCOIN_DOWNLOAD}" = 1 ]; then
+if [ "${VERIFY_BITCOIN_DOWNLOAD}" = 1 ]; then
     verify=1;
 fi
 
