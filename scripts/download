@@ -22,7 +22,7 @@ else
     exit -1
 fi
 
-binary_url="${url}/${tarball_name}"
+binary_url="${url}/${tag}/${tarball_name}"
 shasums_url="${url}/SHA256SUMS.asc"
 
 download_bitcoind() {
